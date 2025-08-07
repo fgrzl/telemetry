@@ -19,6 +19,15 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+// ConfigureService initializes OpenTelemetry tracing and metrics for a service.
+// It configures OTLP exporters for both gRPC and HTTP protocols, with special handling
+// for DataDog endpoints. Returns a shutdown function that should be called when
+// the application terminates.
+//
+// Configuration is controlled by environment variables:
+//   - OTEL_EXPORTER_OTLP_ENDPOINT: OTLP endpoint (defaults to "localhost:4317")
+//   - DD_API_KEY: DataDog API key (required if endpoint contains "datadog")
+//   - ENVIRONMENT: Deployment environment for resource attributes
 func ConfigureService(ctx context.Context, serviceName, version string) func(context.Context) error {
 	endpoint := os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 	if endpoint == "" {

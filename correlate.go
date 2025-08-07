@@ -10,8 +10,10 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
+// CorrelateLogsAndTraces returns a logger enriched with trace and span IDs from the context.
+// It extracts OpenTelemetry trace and span IDs and adds them as structured log fields,
+// including DataDog-compatible decimal representations for correlation.
 func CorrelateLogsAndTraces(ctx context.Context, log *slog.Logger) *slog.Logger {
-
 	if log == nil {
 		log = slog.Default()
 	}
@@ -24,12 +26,10 @@ func CorrelateLogsAndTraces(ctx context.Context, log *slog.Logger) *slog.Logger 
 	ddTraceID := binary.BigEndian.Uint64(traceID[8:16]) // last 8 bytes
 	ddSpanId := binary.BigEndian.Uint64(spanID[:])
 
-	log.With(
+	return log.With(
 		"trace_id", traceID.String(),
 		"span_id", spanID.String(),
 		"dd.trace_id", ddTraceID,
 		"dd.span_id", ddSpanId,
 	)
-
-	return log
 }
