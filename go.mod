@@ -1,6 +1,6 @@
 module github.com/fgrzl/telemetry
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/stretchr/testify v1.10.0
@@ -9,7 +9,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.37.0
 	go.opentelemetry.io/otel/sdk/metric v1.37.0
 	go.opentelemetry.io/otel/trace v1.37.0
-	google.golang.org/grpc v1.74.2
+	google.golang.org/grpc v1.76.0
 )
 
 require (
